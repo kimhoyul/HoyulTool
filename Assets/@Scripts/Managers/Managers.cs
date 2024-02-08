@@ -13,7 +13,6 @@ public class Managers : MonoBehaviour
 	#region Core
 
 	LogManager _log = new LogManager();
-	TitleBarManager _titlebar = new TitleBarManager();
 	//DataManager _data = new DataManager();
 	//InputManager _input = new InputManager();
 	//PoolManager _pool = new PoolManager();
@@ -23,7 +22,6 @@ public class Managers : MonoBehaviour
 	//UIManager _ui = new UIManager();
 
 	public static LogManager Log { get { return Instance._log; } }
-	public static TitleBarManager Titlebar { get { return Instance._titlebar; } }
 	//public static DataManager Data { get { return Instance._data; } }
 	//public static InputManager Input { get { return Instance._input; } }
 	//public static PoolManager Pool { get { return Instance._pool; } }
@@ -59,7 +57,6 @@ public class Managers : MonoBehaviour
 			s_instance = go.GetComponent<Managers>();
 
 			s_instance._log.Init();
-			s_instance._titlebar.Init();
 			//s_instance._data.Init();
 			//s_instance._pool.Init();
 			//s_instance._sound.Init();

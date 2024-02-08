@@ -1,6 +1,6 @@
 public class Define
 {
-	public enum TitleBarTrigger
+	public enum TitleBarTriggerState
 	{
 		Hide,
 		Show,
