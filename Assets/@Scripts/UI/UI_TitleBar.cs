@@ -57,40 +57,36 @@ public class UI_TitleBar : MonoBehaviour, IPointerEnterHandler
 
     #endregion
 
-    private Define.TitleBarTriggerState _triggerState = Define.TitleBarTriggerState.Hide;
-
     public GameObject trigger;
 
-    public float maxHeight;
-    float reducedHeight;
+    private float reducedHeight;
 
-    public void Init()
+    public void Start()
     {
-        maxHeight = gameObject.GetComponent<RectTransform>().rect.height;
-        reducedHeight = maxHeight - (maxHeight / 10);
-        //ToggleTitleBar(true);
-    }
+		reducedHeight = gameObject.GetComponent<RectTransform>().rect.height - 30;
+		//ToggleTitleBar(true);
+	}
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         RectTransform rectTransform = trigger.GetComponent<RectTransform>();
 
-        switch (_triggerState)
+        switch (Managers.Game.TitleBarState)
         {
-            case Define.TitleBarTriggerState.Hide:
-                Debug.Log("Hide");
+            case Define.TitleBarState.Hide:
                 //ToggleTitleBar(true);
-                _triggerState = Define.TitleBarTriggerState.Show;
 
                 rectTransform.offsetMin = new Vector2(rectTransform.offsetMin.x, 0);
-                break;
-            case Define.TitleBarTriggerState.Show:
-                Debug.Log("Show");
+				Managers.Game.TitleBarState = Define.TitleBarState.Show;
+
+				break;
+            case Define.TitleBarState.Show:
                 //ToggleTitleBar(false);
-                _triggerState = Define.TitleBarTriggerState.Hide;
 
                 rectTransform.offsetMin = new Vector2(rectTransform.offsetMin.x, reducedHeight);
-                break;
+				Managers.Game.TitleBarState = Define.TitleBarState.Hide;
+
+				break;
         }
     }
 
