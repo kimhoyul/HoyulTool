@@ -51,4 +51,8 @@ public class Managers : MonoBehaviour
 			return s_instance; 
 		} 
 	}
+
+	private void OnDestroy()
+	{
+	}
 }

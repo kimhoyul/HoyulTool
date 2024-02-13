@@ -1,4 +1,6 @@
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
+using UnityEngine.EventSystems;
 
 public class Utils
 {
@@ -22,7 +24,7 @@ public class Utils
 		return transform.gameObject;
 	}
 
-	private static T FindChild<T>(GameObject go, string name = null, bool recursive = false) where T : Object
+	public static T FindChild<T>(GameObject go, string name = null, bool recursive = false) where T : Object
 	{
 		if (go == null)
 			return null;
@@ -37,13 +39,12 @@ public class Utils
 					T component = transform.GetComponent<T>();
 					if (component != null)
 						return component;
-
 				}
 			}
 		}
 		else
 		{
-			foreach (T component in go.GetComponentsInChildren<T>())
+			foreach (T component in go.GetComponentsInChildren<T>(true))
 			{
 				if (string.IsNullOrEmpty(name) || component.name == name)
 					return component;
@@ -52,4 +53,18 @@ public class Utils
 
 		return null;
 	}
+
+	public static Color HexToColor(string hexCode)
+	{
+		if (ColorUtility.TryParseHtmlString(hexCode, out Color color))
+		{
+			return color;
+		}
+		else
+		{
+			Debug.LogWarning($"[Utils::HexToColor]Invalid Hex Code - {hexCode}");
+			return Color.white; 
+		}
+	}
 }
+	

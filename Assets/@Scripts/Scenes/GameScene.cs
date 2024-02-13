@@ -4,19 +4,26 @@ using UnityEngine;
 
 public class GameScene : MonoBehaviour
 {
-    [SerializeField] private GameObject _titleBarPrefab;
-    
-    private GameObject _titleBar;
-
     void Start()
     {
-        GameObject _titleBar = Instantiate(_titleBarPrefab);
-        
-        _titleBar.name = _titleBarPrefab.name;
+        Managers.Resource.LoadAllAsync<GameObject>("Prefabs", (key, count, totalCount) =>
+        {
+            Debug.Log($"로드중... {key} ({count}/{totalCount})");
+
+            if (count == totalCount)
+            {
+				Debug.Log($"로드완료");
+
+                StartLoaded();
+			}
+		});
+	}
+
+    void StartLoaded()
+    {
+        GameObject go = Managers.Resource.Instantiate("UI_TitleBar.prefab");
+        go.name = "UI_TitleBar";
     }
 
-    void Update()
-    {
-        
-    }
+
 }

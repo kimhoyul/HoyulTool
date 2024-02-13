@@ -57,33 +57,36 @@ public class UI_TitleBar : MonoBehaviour, IPointerEnterHandler
 
     #endregion
 
-    public GameObject trigger;
+    public GameObject _trigger;
 
     private float reducedHeight;
+    private const float _titleBarHeight = 30.0f;
 
     public void Start()
     {
-		reducedHeight = gameObject.GetComponent<RectTransform>().rect.height - 30;
+		reducedHeight = gameObject.GetComponent<RectTransform>().rect.height - _titleBarHeight;
 		//ToggleTitleBar(true);
 	}
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        RectTransform rectTransform = trigger.GetComponent<RectTransform>();
+        RectTransform rectTransform = _trigger.GetComponent<RectTransform>();
 
         switch (Managers.Game.TitleBarState)
         {
             case Define.TitleBarState.Hide:
                 //ToggleTitleBar(true);
 
+                rectTransform.offsetMax = new Vector2(rectTransform.offsetMax.x, - _titleBarHeight);
                 rectTransform.offsetMin = new Vector2(rectTransform.offsetMin.x, 0);
 				Managers.Game.TitleBarState = Define.TitleBarState.Show;
 
 				break;
             case Define.TitleBarState.Show:
-                //ToggleTitleBar(false);
+				//ToggleTitleBar(false);
 
-                rectTransform.offsetMin = new Vector2(rectTransform.offsetMin.x, reducedHeight);
+				rectTransform.offsetMax = new Vector2(rectTransform.offsetMax.x, 0);
+				rectTransform.offsetMin = new Vector2(rectTransform.offsetMin.x, reducedHeight);
 				Managers.Game.TitleBarState = Define.TitleBarState.Hide;
 
 				break;

@@ -1,10 +1,10 @@
 public class Define
 {
-	public enum Scene
+	public enum ToolState
 	{
-		Unknown,
-		DevScene,
-		GameScene,
+		Unkown,
+		Downloader,
+		Setting,
 	}
 
 	public enum Sound
