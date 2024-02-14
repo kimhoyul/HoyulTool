@@ -1,12 +1,7 @@
-using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using TMPro;
-using UnityEditor.AddressableAssets;
-using UnityEditor.AddressableAssets.HostingServices;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -108,6 +103,50 @@ public class UI_SearchedItem : MonoBehaviour
 
 	private void Download()
 	{
-		
+		//System.Windows.Forms.FolderBrowserDialog folderDialog = new System.Windows.Forms.FolderBrowserDialog();
+		//if (folderDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+		//{
+			//string folderPath = folderDialog.SelectedPath;
+			//string initialFileName = Microsoft.VisualBasic.Interaction.InputBox("파일의 시작 번호를 입력하세요.:", "시작 번호", "1");
+			//if (!int.TryParse(initialFileName, out int fileNameNumber))
+			//{
+			//	MessageBox.Show("이름이 숫자 형식이 아닙니다. 다시 입력해 주세요.");
+			//	return;
+			//}
+
+			//ResetProgressBar(imageUrls.Length);
+
+			//UpdateControlText("0%", lblPercent);
+
+
+			//for (int i = 0; i < imageUrls.Length; i++)
+			//{
+			//	string fileName = $"{fileNameNumber++}{System.IO.Path.GetExtension(imageUrls[i])}";
+			//	fileName = fileName.Replace("\r", "");
+			//	await DownloadImageAsync(imageUrls[i], folderPath, fileName);
+			//	progressBar.Value++;
+			//	UpdateControlText($"{(int)((double)progressBar.Value / progressBar.Maximum * 100)}%", lblPercent);
+			//	UpdateControlText($"다운로드 중...({i} / {imageUrls.Length})", lblStatus);
+			//}
+
+			//UpdateControlText("다운로드 완료", lblStatus);
+			//MessageBox.Show("Download completed!");
+			//System.Diagnostics.Process.Start("explorer.exe", folderPath);
 	}
 }
+
+	//private async Task DownloadImageAsync(string imageUrl, string folderPath, string fileName)
+	//{
+	//	try
+	//	{
+	//		var response = await client.GetAsync(imageUrl);
+	//		response.EnsureSuccessStatusCode();
+	//		var imageBytes = await response.Content.ReadAsByteArrayAsync();
+	//		string filePath = System.IO.Path.Combine(folderPath, fileName);
+	//		System.IO.File.WriteAllBytes(filePath, imageBytes);
+	//	}
+	//	catch (Exception ex)
+	//	{
+	//		MessageBox.Show($"Error downloading {imageUrl}: {ex.Message}");
+	//	}
+	//}
