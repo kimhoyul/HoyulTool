@@ -152,7 +152,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      ComicsDownloadIcon_0: -1410334858975651500
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

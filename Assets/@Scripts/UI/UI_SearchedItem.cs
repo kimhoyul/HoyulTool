@@ -1,6 +1,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 using SFB;
 =======
 =======
@@ -10,6 +11,9 @@ using System;
 >>>>>>> parent of 99e2f5b (sfb 사용)
 =======
 >>>>>>> parent of 1a1fac3 (download 제작중)
+=======
+using System;
+>>>>>>> parent of 99e2f5b (sfb 사용)
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -116,10 +120,9 @@ public class UI_SearchedItem : MonoBehaviour
 		}
 	}
 
-
-
 	private void Download()
 	{
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -182,6 +185,8 @@ public class UI_SearchedItem : MonoBehaviour
 	
 }
 =======
+=======
+>>>>>>> parent of 99e2f5b (sfb 사용)
 		//System.Windows.Forms.FolderBrowserDialog folderDialog = new System.Windows.Forms.FolderBrowserDialog();
 		//if (folderDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
 		//{
@@ -229,6 +234,7 @@ public class UI_SearchedItem : MonoBehaviour
 	//		MessageBox.Show($"Error downloading {imageUrl}: {ex.Message}");
 	//	}
 	//}
+<<<<<<< HEAD
 >>>>>>> parent of 99e2f5b (sfb 사용)
 =======
       
@@ -240,3 +246,5 @@ public class UI_SearchedItem : MonoBehaviour
 	}
 }
 >>>>>>> parent of 46896cb (download 및 FileBrowser 제작 시작)
+=======
+>>>>>>> parent of 99e2f5b (sfb 사용)
