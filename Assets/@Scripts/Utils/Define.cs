@@ -19,4 +19,12 @@ public class Define
 		Show,
 		MaxCount,
 	}
+
+	public enum NameValidationStatus
+	{
+		Valid,
+		NoneNumber,
+		Empty,
+		MultipleNumbers,
+	}
 }

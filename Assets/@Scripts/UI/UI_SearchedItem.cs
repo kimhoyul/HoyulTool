@@ -1,33 +1,16 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 using SFB;
-=======
-=======
-using NUnit.Framework;
->>>>>>> parent of 46896cb (download ë° FileBrowser ì œìž‘ ì‹œìž‘)
-using System;
->>>>>>> parent of 99e2f5b (sfb ì‚¬ìš©)
-=======
->>>>>>> parent of 1a1fac3 (download ì œìž‘ì¤‘)
-=======
-using System;
->>>>>>> parent of 99e2f5b (sfb ì‚¬ìš©)
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
+using System.IO;
+using System.Text.RegularExpressions;
 using TMPro;
-using UnityEditor.AddressableAssets;
-using UnityEditor.AddressableAssets.HostingServices;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
 public class UI_SearchedItem : MonoBehaviour
 {
-    public TMP_Text ItemCountText;
+	public TMP_Text ItemCountText;
 	public Transform ItemPanel;
 	public GameObject Content;
 	public RectTransform SearchedItemBG;
@@ -35,9 +18,11 @@ public class UI_SearchedItem : MonoBehaviour
 	public Button SelectAllButton;
 	public Button DownloadButton;
 
-	private List<string> _selectedItem = new List<string>();
-	private Dictionary<int, KeyValuePair<string, GameObject>> _imageSourceUrls = new Dictionary<int, KeyValuePair<string, GameObject>>();
+	private List<int> _selectedItem = new List<int>();
+	private Dictionary<int, GameObject> _imageSourceUrls = new Dictionary<int, GameObject>();
 	private int index = 0;
+
+	List<Texture2D> _downloadImages = new List<Texture2D>();
 
 	private void Start()
 	{
@@ -46,7 +31,7 @@ public class UI_SearchedItem : MonoBehaviour
 	}
 
 	public void SetItemCountText(int count)
-    {
+	{
 		ItemCountText.text = $"{count} item";
 	}
 
@@ -65,8 +50,7 @@ public class UI_SearchedItem : MonoBehaviour
 		GameObject go = Managers.Resource.Instantiate("UI_LoadedImage.prefab", ItemPanel);
 		go.GetComponent<Button>().onClick.AddListener(() => { SelectOne(i); });
 
-		KeyValuePair<string, GameObject> pair = new KeyValuePair<string, GameObject>(sourceUrl, go);
-		_imageSourceUrls.Add(i, pair);
+		_imageSourceUrls.Add(i, go);
 
 		index++;
 
@@ -80,15 +64,15 @@ public class UI_SearchedItem : MonoBehaviour
 
 	private void SelectOne(int index)
 	{
-		if (_selectedItem.Contains(_imageSourceUrls[index].Key))
+		if (_selectedItem.Contains(index))
 		{
-			Utils.FindChild(_imageSourceUrls[index].Value, "Check", true).SetActive(false);
-			_selectedItem.Remove(_imageSourceUrls[index].Key);
+			Utils.FindChild(_imageSourceUrls[index], "Check", true).SetActive(false);
+			_selectedItem.Remove(index);
 			return;
 		}
 
-		Utils.FindChild(_imageSourceUrls[index].Value, "Check", true).SetActive(true);
-		_selectedItem.Add(_imageSourceUrls[index].Key);
+		Utils.FindChild(_imageSourceUrls[index], "Check", true).SetActive(true);
+		_selectedItem.Add(index);
 	}
 
 	public void OnComplate()
@@ -106,26 +90,23 @@ public class UI_SearchedItem : MonoBehaviour
 		else
 		{
 			rawImage.texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
+			_downloadImages.Add(((DownloadHandlerTexture)request.downloadHandler).texture);
 		}
 	}
 
-    private void SelectAll()
+	private void SelectAll()
 	{
 		_selectedItem.Clear();
 
 		for (int i = 0; i < ItemPanel.childCount; i++)
 		{
 			Utils.FindChild(ItemPanel.GetChild(i).gameObject, "Check", true).SetActive(true);
-			_selectedItem.Add(_imageSourceUrls[i].Key);
+			_selectedItem.Add(i);
 		}
 	}
 
 	private void Download()
 	{
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 		// TODO : ÆÄÀÏ ÀÌ¸§ Áßº¹ Ã¼Å©
 		// TODO : Æú´õ¸¸ ¼±ÅÃÇÒÁö, Æú´õ¿Í ÆÄÀÏ¸í ÁöÁ¤ÇÏ°Ô ÇÒÁö ¼±ÅÃÇÏ±â
 		
@@ -184,67 +165,3 @@ public class UI_SearchedItem : MonoBehaviour
 
 	
 }
-=======
-=======
->>>>>>> parent of 99e2f5b (sfb ì‚¬ìš©)
-		//System.Windows.Forms.FolderBrowserDialog folderDialog = new System.Windows.Forms.FolderBrowserDialog();
-		//if (folderDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-		//{
-			//string folderPath = folderDialog.SelectedPath;
-			//string initialFileName = Microsoft.VisualBasic.Interaction.InputBox("ÆÄÀÏÀÇ ½ÃÀÛ ¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä.:", "½ÃÀÛ ¹øÈ£", "1");
-			//if (!int.TryParse(initialFileName, out int fileNameNumber))
-			//{
-			//	MessageBox.Show("ÀÌ¸§ÀÌ ¼ýÀÚ Çü½ÄÀÌ ¾Æ´Õ´Ï´Ù. ´Ù½Ã ÀÔ·ÂÇØ ÁÖ¼¼¿ä.");
-			//	return;
-			//}
-
-			//ResetProgressBar(imageUrls.Length);
-
-			//UpdateControlText("0%", lblPercent);
-
-
-			//for (int i = 0; i < imageUrls.Length; i++)
-			//{
-			//	string fileName = $"{fileNameNumber++}{System.IO.Path.GetExtension(imageUrls[i])}";
-			//	fileName = fileName.Replace("\r", "");
-			//	await DownloadImageAsync(imageUrls[i], folderPath, fileName);
-			//	progressBar.Value++;
-			//	UpdateControlText($"{(int)((double)progressBar.Value / progressBar.Maximum * 100)}%", lblPercent);
-			//	UpdateControlText($"´Ù¿î·Îµå Áß...({i} / {imageUrls.Length})", lblStatus);
-			//}
-
-			//UpdateControlText("´Ù¿î·Îµå ¿Ï·á", lblStatus);
-			//MessageBox.Show("Download completed!");
-			//System.Diagnostics.Process.Start("explorer.exe", folderPath);
-	}
-}
-
-	//private async Task DownloadImageAsync(string imageUrl, string folderPath, string fileName)
-	//{
-	//	try
-	//	{
-	//		var response = await client.GetAsync(imageUrl);
-	//		response.EnsureSuccessStatusCode();
-	//		var imageBytes = await response.Content.ReadAsByteArrayAsync();
-	//		string filePath = System.IO.Path.Combine(folderPath, fileName);
-	//		System.IO.File.WriteAllBytes(filePath, imageBytes);
-	//	}
-	//	catch (Exception ex)
-	//	{
-	//		MessageBox.Show($"Error downloading {imageUrl}: {ex.Message}");
-	//	}
-	//}
-<<<<<<< HEAD
->>>>>>> parent of 99e2f5b (sfb ì‚¬ìš©)
-=======
-      
-    }
-}
->>>>>>> parent of 1a1fac3 (download ì œìž‘ì¤‘)
-=======
-		
-	}
-}
->>>>>>> parent of 46896cb (download ë° FileBrowser ì œìž‘ ì‹œìž‘)
-=======
->>>>>>> parent of 99e2f5b (sfb ì‚¬ìš©)
