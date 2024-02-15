@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 using SFB;
+=======
+using System;
+>>>>>>> parent of 99e2f5b (sfb ì‚¬ìš©)
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -107,6 +111,7 @@ public class UI_SearchedItem : MonoBehaviour
 
 	private void Download()
 	{
+<<<<<<< HEAD
 		// TODO : ÆÄÀÏ ÀÌ¸§ Áßº¹ Ã¼Å©
 		// TODO : Æú´õ¸¸ ¼±ÅÃÇÒÁö, Æú´õ¿Í ÆÄÀÏ¸í ÁöÁ¤ÇÏ°Ô ÇÒÁö ¼±ÅÃÇÏ±â
 		
@@ -165,3 +170,52 @@ public class UI_SearchedItem : MonoBehaviour
 
 	
 }
+=======
+		//System.Windows.Forms.FolderBrowserDialog folderDialog = new System.Windows.Forms.FolderBrowserDialog();
+		//if (folderDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+		//{
+			//string folderPath = folderDialog.SelectedPath;
+			//string initialFileName = Microsoft.VisualBasic.Interaction.InputBox("ÆÄÀÏÀÇ ½ÃÀÛ ¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä.:", "½ÃÀÛ ¹øÈ£", "1");
+			//if (!int.TryParse(initialFileName, out int fileNameNumber))
+			//{
+			//	MessageBox.Show("ÀÌ¸§ÀÌ ¼ýÀÚ Çü½ÄÀÌ ¾Æ´Õ´Ï´Ù. ´Ù½Ã ÀÔ·ÂÇØ ÁÖ¼¼¿ä.");
+			//	return;
+			//}
+
+			//ResetProgressBar(imageUrls.Length);
+
+			//UpdateControlText("0%", lblPercent);
+
+
+			//for (int i = 0; i < imageUrls.Length; i++)
+			//{
+			//	string fileName = $"{fileNameNumber++}{System.IO.Path.GetExtension(imageUrls[i])}";
+			//	fileName = fileName.Replace("\r", "");
+			//	await DownloadImageAsync(imageUrls[i], folderPath, fileName);
+			//	progressBar.Value++;
+			//	UpdateControlText($"{(int)((double)progressBar.Value / progressBar.Maximum * 100)}%", lblPercent);
+			//	UpdateControlText($"´Ù¿î·Îµå Áß...({i} / {imageUrls.Length})", lblStatus);
+			//}
+
+			//UpdateControlText("´Ù¿î·Îµå ¿Ï·á", lblStatus);
+			//MessageBox.Show("Download completed!");
+			//System.Diagnostics.Process.Start("explorer.exe", folderPath);
+	}
+}
+
+	//private async Task DownloadImageAsync(string imageUrl, string folderPath, string fileName)
+	//{
+	//	try
+	//	{
+	//		var response = await client.GetAsync(imageUrl);
+	//		response.EnsureSuccessStatusCode();
+	//		var imageBytes = await response.Content.ReadAsByteArrayAsync();
+	//		string filePath = System.IO.Path.Combine(folderPath, fileName);
+	//		System.IO.File.WriteAllBytes(filePath, imageBytes);
+	//	}
+	//	catch (Exception ex)
+	//	{
+	//		MessageBox.Show($"Error downloading {imageUrl}: {ex.Message}");
+	//	}
+	//}
+>>>>>>> parent of 99e2f5b (sfb ì‚¬ìš©)
