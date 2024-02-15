@@ -1,8 +1,6 @@
 using UnityEngine;
 using static UnityEngine.EventSystems.EventTrigger;
 using UnityEngine.EventSystems;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 public class Utils
 {
@@ -67,21 +65,6 @@ public class Utils
 			Debug.LogWarning($"[Utils::HexToColor]Invalid Hex Code - {hexCode}");
 			return Color.white; 
 		}
-	}
-
-	public static List<string> ExtractNumbersFromString(string name)
-	{
-		string pattern = @"\d+";
-		List<string> strings = new List<string>();
-
-		MatchCollection matches = Regex.Matches(name, pattern);
-
-		foreach (Match match in matches)
-		{
-			strings.Add(match.Value);
-		}
-
-		return strings;
 	}
 }
 	

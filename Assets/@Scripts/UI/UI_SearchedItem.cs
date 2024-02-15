@@ -1,12 +1,13 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 using SFB;
 =======
 using System;
 >>>>>>> parent of 99e2f5b (sfb ì‚¬ìš©)
+=======
+>>>>>>> parent of 1a1fac3 (download ì œìž‘ì¤‘)
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -14,7 +15,7 @@ using UnityEngine.UI;
 
 public class UI_SearchedItem : MonoBehaviour
 {
-	public TMP_Text ItemCountText;
+    public TMP_Text ItemCountText;
 	public Transform ItemPanel;
 	public GameObject Content;
 	public RectTransform SearchedItemBG;
@@ -22,11 +23,9 @@ public class UI_SearchedItem : MonoBehaviour
 	public Button SelectAllButton;
 	public Button DownloadButton;
 
-	private List<int> _selectedItem = new List<int>();
-	private Dictionary<int, GameObject> _imageSourceUrls = new Dictionary<int, GameObject>();
+	private List<string> _selectedItem = new List<string>();
+	private Dictionary<int, KeyValuePair<string, GameObject>> _imageSourceUrls = new Dictionary<int, KeyValuePair<string, GameObject>>();
 	private int index = 0;
-
-	List<Texture2D> _downloadImages = new List<Texture2D>();
 
 	private void Start()
 	{
@@ -35,7 +34,7 @@ public class UI_SearchedItem : MonoBehaviour
 	}
 
 	public void SetItemCountText(int count)
-	{
+    {
 		ItemCountText.text = $"{count} item";
 	}
 
@@ -54,7 +53,8 @@ public class UI_SearchedItem : MonoBehaviour
 		GameObject go = Managers.Resource.Instantiate("UI_LoadedImage.prefab", ItemPanel);
 		go.GetComponent<Button>().onClick.AddListener(() => { SelectOne(i); });
 
-		_imageSourceUrls.Add(i, go);
+		KeyValuePair<string, GameObject> pair = new KeyValuePair<string, GameObject>(sourceUrl, go);
+		_imageSourceUrls.Add(i, pair);
 
 		index++;
 
@@ -68,15 +68,15 @@ public class UI_SearchedItem : MonoBehaviour
 
 	private void SelectOne(int index)
 	{
-		if (_selectedItem.Contains(index))
+		if (_selectedItem.Contains(_imageSourceUrls[index].Key))
 		{
-			Utils.FindChild(_imageSourceUrls[index], "Check", true).SetActive(false);
-			_selectedItem.Remove(index);
+			Utils.FindChild(_imageSourceUrls[index].Value, "Check", true).SetActive(false);
+			_selectedItem.Remove(_imageSourceUrls[index].Key);
 			return;
 		}
 
-		Utils.FindChild(_imageSourceUrls[index], "Check", true).SetActive(true);
-		_selectedItem.Add(index);
+		Utils.FindChild(_imageSourceUrls[index].Value, "Check", true).SetActive(true);
+		_selectedItem.Add(_imageSourceUrls[index].Key);
 	}
 
 	public void OnComplate()
@@ -94,23 +94,25 @@ public class UI_SearchedItem : MonoBehaviour
 		else
 		{
 			rawImage.texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
-			_downloadImages.Add(((DownloadHandlerTexture)request.downloadHandler).texture);
 		}
 	}
 
-	private void SelectAll()
+    private void SelectAll()
 	{
 		_selectedItem.Clear();
 
 		for (int i = 0; i < ItemPanel.childCount; i++)
 		{
 			Utils.FindChild(ItemPanel.GetChild(i).gameObject, "Check", true).SetActive(true);
-			_selectedItem.Add(i);
+			_selectedItem.Add(_imageSourceUrls[i].Key);
 		}
 	}
 
+
+
 	private void Download()
 	{
+<<<<<<< HEAD
 <<<<<<< HEAD
 		// TODO : ÆÄÀÏ ÀÌ¸§ Áßº¹ Ã¼Å©
 		// TODO : Æú´õ¸¸ ¼±ÅÃÇÒÁö, Æú´õ¿Í ÆÄÀÏ¸í ÁöÁ¤ÇÏ°Ô ÇÒÁö ¼±ÅÃÇÏ±â
@@ -219,3 +221,8 @@ public class UI_SearchedItem : MonoBehaviour
 	//	}
 	//}
 >>>>>>> parent of 99e2f5b (sfb ì‚¬ìš©)
+=======
+      
+    }
+}
+>>>>>>> parent of 1a1fac3 (download ì œìž‘ì¤‘)
