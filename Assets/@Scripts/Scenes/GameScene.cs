@@ -17,13 +17,13 @@ public class GameScene : MonoBehaviour
                 StartLoaded();
 			}
 		});
-	}
+    }
 
     void StartLoaded()
     {
-        GameObject go = Managers.Resource.Instantiate("UI_TitleBar.prefab");
-        go.name = "UI_TitleBar";
-    }
+        GameObject titleBar = Managers.Resource.Instantiate("UI_TitleBar.prefab");
+        titleBar.name = "@TitleBar";
+	}
 
 
 }

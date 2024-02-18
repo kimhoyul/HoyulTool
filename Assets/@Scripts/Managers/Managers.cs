@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Managers : MonoBehaviour
@@ -16,20 +17,22 @@ public class Managers : MonoBehaviour
 
 	#region Core
 	DataManager _data = new DataManager();
+	LoadingManager _loading = new LoadingManager();
+	LogManager _log = new LogManager();
 	ResourceManager _resource = new ResourceManager();
 	SceneManagerEX _scene = new SceneManagerEX();
 	SoundManager _sound = new SoundManager();
 	UIManager _ui = new UIManager();
-	LogManager _log = new LogManager();
 	public static DataManager Data { get { return Instance._data; } }
+	public static LoadingManager Loading { get { return Instance._loading; } }
+	public static LogManager Log { get { return Instance._log; } }
 	public static ResourceManager Resource { get { return Instance._resource; } }
 	public static SceneManagerEX Scene { get { return Instance._scene; } }
 	public static SoundManager Sound { get { return Instance._sound; } }
 	public static UIManager UI { get { return Instance._ui; } }
-	public static LogManager Log { get { return Instance._log; } }
 	#endregion
 
-	static Managers Instance 
+	public static Managers Instance 
 	{ 
 		get 
 		{ 
@@ -46,8 +49,10 @@ public class Managers : MonoBehaviour
 
 				DontDestroyOnLoad(go);
 				s_instance = go.GetComponent<Managers>();
-			}
 
+				s_instance._loading.Init();
+			}
+			
 			return s_instance; 
 		} 
 	}

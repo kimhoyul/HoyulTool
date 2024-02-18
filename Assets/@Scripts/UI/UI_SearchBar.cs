@@ -3,6 +3,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System;
+using Unity.VisualScripting;
 
 public class UI_SearchBar : MonoBehaviour
 {
@@ -18,7 +20,17 @@ public class UI_SearchBar : MonoBehaviour
 	private void SetupEventListeners()
 	{
 		searchIconButton.onClick.AddListener(() => searchInputField.ActivateInputField());
-		searchInputField.onEndEdit.AddListener(HandleSearchSubmit);
+	}
+
+	void Update()
+	{
+		if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+		{
+			if (searchInputField.text != string.Empty)
+			{
+				HandleSearchSubmit(searchInputField.text);
+			}
+		}
 	}
 
 	private void HandleSearchSubmit(string searchText)
@@ -26,22 +38,22 @@ public class UI_SearchBar : MonoBehaviour
 		if (!string.IsNullOrEmpty(searchText))
 		{
 			searchBarAnimator.Play("Move");
-			StartCoroutine(FadeInAfterAnimation());
+			StartCoroutine(FadeInAfterAnimation(searchText));
 		}
 	}
 
-	IEnumerator FadeInAfterAnimation()
+	IEnumerator FadeInAfterAnimation(string url)
 	{
 		yield return new WaitUntil(() => searchBarAnimator.GetCurrentAnimatorStateInfo(0).IsName("Move"));
 		yield return new WaitUntil(() => searchBarAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f && !searchBarAnimator.IsInTransition(0));
 
+		SeleniumController sc = transform.GetComponentInChildren<SeleniumController>();
+		sc.ConfigureDriverOptions(url, HandleImageLoaded);
+	}
+
+	private void HandleImageLoaded(int imageCount)
+	{
 		GameObject go = Utils.FindChild(transform.parent.gameObject, "UI_SearchedItem", true);
 		go.SetActive(true);
-		UI_SearchedItem _searchedItem = go.GetComponent<UI_SearchedItem>();
-		
-		Debug.Log("UI_SearchedItem");
-		GameObject go2 = new GameObject();
-		WebDriverManager web = go2.AddComponent<WebDriverManager>();
-		StartCoroutine(web.LoadSearchResults(searchInputField.text, _searchedItem.OnImageLoaded, _searchedItem.SetItemCountText, _searchedItem.OnComplate));
 	}
 }

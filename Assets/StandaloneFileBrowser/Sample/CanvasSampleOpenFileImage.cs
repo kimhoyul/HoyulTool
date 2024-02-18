@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using SFB;
+using UnityEngine.Networking;
 
 [RequireComponent(typeof(Button))]
 public class CanvasSampleOpenFileImage : MonoBehaviour, IPointerDownHandler {
@@ -45,9 +46,20 @@ public class CanvasSampleOpenFileImage : MonoBehaviour, IPointerDownHandler {
     }
 #endif
 
-    private IEnumerator OutputRoutine(string url) {
-        var loader = new WWW(url);
-        yield return loader;
-        output.texture = loader.texture;
-    }
+	private IEnumerator OutputRoutine(string url)
+	{
+		UnityWebRequest loader = UnityWebRequestTexture.GetTexture(url);
+		yield return loader.SendWebRequest();
+
+		if (loader.result != UnityWebRequest.Result.Success)
+		{
+			Debug.LogError("Error loading texture: " + loader.error);
+		}
+		else
+		{
+			// 로드된 텍스처를 가져와서 RawImage의 텍스처로 설정
+			Texture2D texture = DownloadHandlerTexture.GetContent(loader);
+			output.texture = texture;
+		}
+	}
 }

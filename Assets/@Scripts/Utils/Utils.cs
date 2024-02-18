@@ -68,20 +68,5 @@ public class Utils
 			return Color.white; 
 		}
 	}
-
-	public static List<string> ExtractNumbersFromString(string name)
-	{
-		string pattern = @"\d+";
-		List<string> strings = new List<string>();
-
-		MatchCollection matches = Regex.Matches(name, pattern);
-
-		foreach (Match match in matches)
-		{
-			strings.Add(match.Value);
-		}
-
-		return strings;
-	}
 }
 	
