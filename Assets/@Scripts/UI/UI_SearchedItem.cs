@@ -13,12 +13,13 @@ public class UI_SearchedItem : MonoBehaviour
 	[SerializeField] private Button SelectAllButton;
 	[SerializeField] private Button DownloadButton;
 
+	private bool isActive = false;
 	private List<int> _selectedItem = new List<int>();
 	private Dictionary<int, GameObject> _imageSourceUrls = new Dictionary<int, GameObject>();
 
 	private void Start()
 	{
-		SelectAllButton.onClick.AddListener(() => SelectAll());
+		SelectAllButton.onClick.AddListener(() => ChangeSelectStateAll());
 		DownloadButton.onClick.AddListener(() => Download());
 				
 		for ( int i = 0; i < ItemPanel.childCount; i++)
@@ -29,6 +30,20 @@ public class UI_SearchedItem : MonoBehaviour
 		}
 
 		SetItemCountText(ItemPanel.childCount);
+	}
+
+	public void SetSourceUrls()
+	{
+		_imageSourceUrls.Clear();
+		_selectedItem.Clear();
+
+		for (int i = 0; i < ItemPanel.childCount; i++)
+		{
+			int index = i;
+			_imageSourceUrls.Add(i, ItemPanel.GetChild(i).gameObject);
+			ItemPanel.GetChild(i).GetComponent<Button>().onClick.RemoveAllListeners();
+			ItemPanel.GetChild(i).GetComponent<Button>().onClick.AddListener(() => SelectOne(index));
+		}
 	}
 
 	public void SetItemCountText(int count)
@@ -49,14 +64,23 @@ public class UI_SearchedItem : MonoBehaviour
 		_selectedItem.Add(index);
 	}
 
-    private void SelectAll()
+    private void ChangeSelectStateAll()
 	{
+		isActive = !isActive;
+
 		_selectedItem.Clear();
 
 		for (int i = 0; i < ItemPanel.childCount; i++)
 		{
-			Utils.FindChild(ItemPanel.GetChild(i).gameObject, "Check", true).SetActive(true);
-			_selectedItem.Add(i);
+			if (ItemPanel.GetChild(i).gameObject.activeSelf == false)
+				continue;
+
+			Utils.FindChild(ItemPanel.GetChild(i).gameObject, "Check", true).SetActive(isActive);
+            if (isActive == true)
+            {
+				_selectedItem.Add(i);
+			}
+
 		}
 	}
 
@@ -64,12 +88,27 @@ public class UI_SearchedItem : MonoBehaviour
 	{
 		var path = StandaloneFileBrowser.OpenFolderPanel("", "", false);
 
-		if (string.IsNullOrEmpty(path[0]))
+		if (path.Length == 0)
 			return;
 
-        for(int i = 0; i < _selectedItem.Count; i++)
+		int addCount = 1;
+		for (int i = 0; i < _selectedItem.Count; i++)
         {
-			string fullPath = path[0] + $"\\{i + 1}.jpg";
+			string fullPath = path[0] + $"\\{i + addCount}.jpg";
+
+			while(true)
+			{
+				if (File.Exists(fullPath))
+				{
+					++addCount;
+					fullPath = path[0] + $"\\{i + addCount}.jpg";
+				}
+				else
+				{
+					break;
+				}
+			}
+
 			GameObject go = _imageSourceUrls[_selectedItem[i]];
 			Texture2D texture2D = go.GetComponent<RawImage>().texture as Texture2D;
 
@@ -77,5 +116,8 @@ public class UI_SearchedItem : MonoBehaviour
 			_textureBytes = texture2D.EncodeToJPG();
             File.WriteAllBytes(fullPath, _textureBytes);
         }
+
+		ChangeSelectStateAll();
+		Debug.Log("다운로드가 완료 되었습니다.");
 	}
 }

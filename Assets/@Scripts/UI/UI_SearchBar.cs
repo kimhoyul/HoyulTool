@@ -54,6 +54,10 @@ public class UI_SearchBar : MonoBehaviour
 	private void HandleImageLoaded(int imageCount)
 	{
 		GameObject go = Utils.FindChild(transform.parent.gameObject, "UI_SearchedItem", true);
-		go.SetActive(true);
+
+		if (go.activeSelf == false)
+			go.SetActive(true);
+		else
+			go.GetComponent<UI_SearchedItem>().SetSourceUrls();
 	}
 }

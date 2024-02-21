@@ -103,31 +103,43 @@ public class SeleniumController : MonoBehaviour
 		{
 			yield return new WaitForSeconds(0.1f);
 		}
-
-		bool isPageLoadComplete = false;
-		while (isPageLoadComplete == false)
+		
+		while(true)
 		{
-			var html_encoder_div = _driver.FindElements(By.Id("html_encoder_div"));
-			if (html_encoder_div.Count == 0)
+			_imageUrls.Clear();
+			bool isPageLoadComplete = false;
+			while (isPageLoadComplete == false)
 			{
-				var view_padding = _driver.FindElements(By.ClassName("view-padding"));
-				if (view_padding.Count == 0)
+				var html_encoder_div = _driver.FindElements(By.Id("html_encoder_div"));
+				if (html_encoder_div.Count == 0)
 				{
-					yield return new WaitForSeconds(0.1f);
+					var view_padding = _driver.FindElements(By.ClassName("view-padding"));
+					if (view_padding.Count == 0)
+					{
+						yield return new WaitForSeconds(0.1f);
+					}
+					else
+					{
+						isPageLoadComplete = true;
+						yield return StartCoroutine(ParseWebtoon(By.XPath("//div[@class='view-img']/following-sibling::div")));
+					}
 				}
 				else
 				{
 					isPageLoadComplete = true;
-					yield return StartCoroutine(ParseWebtoon(By.XPath("//div[@class='view-img']/following-sibling::div")));
+					yield return StartCoroutine(ParseWebtoon(By.Id("html_encoder_div")));
 				}
 			}
-			else
-			{
-				isPageLoadComplete = true;
-				yield return StartCoroutine(ParseWebtoon(By.Id("html_encoder_div")));
-			}
-		}
 
+			if (_imageUrls.Count == _imageDic.Count)
+			{
+				Debug.Log("웹툰 파싱이 완료되었습니다.");
+				break;
+			}
+
+			_driver.Navigate().Refresh();
+		}
+		
 		StartCoroutine(ConvertAndDisplayImageCoroutine());
 
 		callback.Invoke(_imageUrls.Count);
@@ -147,15 +159,10 @@ public class SeleniumController : MonoBehaviour
 
 			yield return WaitLoading(element);
 		}
-
-		Debug.Log("웹툰 파싱이 완료되었습니다.");
 	}
 
 	private IEnumerator WaitLoading(ReadOnlyCollection<IWebElement> element)
 	{
-		//if (init == true)
-		//	yield return WaitDocumentState();
-
 		for (int searchingIndex = 0; searchingIndex < element.Count; searchingIndex++)
 		{
 			string src = element[searchingIndex].GetAttribute("src");
@@ -186,19 +193,6 @@ public class SeleniumController : MonoBehaviour
 			{
 				GameObject go = Managers.Resource.Instantiate("UI_LoadedImage.prefab", itemPanel);
 			}
-		}
-	}
-
-	private IEnumerator WaitDocumentState()
-	{
-		bool isPageLoaded = false;
-		
-		IJavaScriptExecutor jsExecutor = (IJavaScriptExecutor)_driver;
-		
-		while (isPageLoaded == false)
-		{
-			isPageLoaded = (bool)jsExecutor.ExecuteScript("return document.readyState === 'complete';");
-			yield return new WaitForSeconds(0.1f);
 		}
 	}
 
