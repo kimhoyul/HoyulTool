@@ -8,11 +8,9 @@ using OpenQA.Selenium;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using UnityEngine.UI;
 using System;
 using OpenQA.Selenium.Interactions;
 using System.Collections.ObjectModel;
-using TMPro;
 
 public class SeleniumController : MonoBehaviour
 {
@@ -101,7 +99,7 @@ public class SeleniumController : MonoBehaviour
 
 		StartCoroutine(SetTitleTextCoroutine(webtoonInfoCallback));
 
-		while (true)
+        while (true)
 		{
 			_imageUrls.Clear();
 			bool isPageLoadComplete = false;
@@ -149,31 +147,29 @@ public class SeleniumController : MonoBehaviour
 		Managers.Loading.StopLoadng();
 	}
 
-	IEnumerator SetTitleTextCoroutine(Action<WebtoonInfo> webtoonInfoCallback)
+    private IEnumerator SetTitleTextCoroutine(Action<WebtoonInfo> webtoonInfoCallback)
 	{
-		bool isTitleSet = false;
-		while (!isTitleSet)
+		while (true)
 		{
-			isTitleSet = SetTitleText(webtoonInfoCallback);
-			yield return null;
-		}
-	}
+            var title = _driver.FindElements(By.XPath("//*[@id=\"at-main\"]/div[4]/section/article/div[1]/div/div[2]/div"));
+            var pageIndicator = _driver.FindElements(By.XPath("//*[@id=\"at-main\"]/div[4]/section/article/div[1]/div/div[2]/div/span"));
+            var selectElements = _driver.FindElements(By.Name("wr_id"));
+            if (title.Count != 0 && pageIndicator.Count != 0 && selectElements.Count != 0)
+            {
+                WebtoonInfo webtoonInfo = new WebtoonInfo();
+                webtoonInfo.title = title[0].GetAttribute("title");
+                webtoonInfo.pageIndicator = pageIndicator[0].Text;
 
-	private bool SetTitleText(Action<WebtoonInfo> webtoonInfoCallback)
-	{
-		var title = _driver.FindElements(By.XPath("//*[@id=\"at-main\"]/div[4]/section/article/div[1]/div/div[2]/div"));
-		var count = _driver.FindElements(By.XPath("//*[@id=\"at-main\"]/div[4]/section/article/div[1]/div/div[2]/div/span"));
-		if (title.Count != 0 && count.Count != 0)
-		{
-			var text = title[0].GetAttribute("title");
+                var selectOptions = selectElements[0].FindElements(By.TagName("option"));
+                foreach (var option in selectOptions)
+                {
+                    webtoonInfo.navValues.Add(option.Text);
+                }
 
-			WebtoonInfo webtoonInfo = new WebtoonInfo();
-			webtoonInfo.title = text;
-			webtoonInfo.pageIndicator = count[0].Text;
-			webtoonInfoCallback.Invoke(webtoonInfo);
-			return true;
-		}
-		return false;
+                webtoonInfoCallback.Invoke(webtoonInfo);
+                yield break;
+            }
+        }
 	}
 
 	private IEnumerator ParseWebtoon(By findElement)

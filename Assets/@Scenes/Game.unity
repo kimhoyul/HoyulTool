@@ -338,10 +338,10 @@ RectTransform:
   - {fileID: 744174260}
   m_Father: {fileID: 1244772395}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 615.52, y: -15}
-  m_SizeDelta: {x: 130, y: 30}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 130, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &113239448
 MonoBehaviour:
@@ -1506,9 +1506,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 890169116}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 21.25, y: -15}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 24, y: 24}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &508068585
@@ -2073,9 +2073,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 113239447}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 82.25, y: -15}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 77, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &744174261
@@ -2263,9 +2263,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 890169116}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 82.25, y: -15}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 77, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &800847195
@@ -2878,10 +2878,10 @@ RectTransform:
   - {fileID: 800847194}
   m_Father: {fileID: 1244772395}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 753.52, y: -15}
-  m_SizeDelta: {x: 130, y: 30}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 130, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &890169117
 MonoBehaviour:
@@ -4724,7 +4724,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1530230444}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -4744,6 +4744,7 @@ MonoBehaviour:
   _searchInputField: {fileID: 7323395665135781870}
   _titleText: {fileID: 882391636}
   _pageIndicatorText: {fileID: 1605136715}
+  _dropdown: {fileID: 3274066060806089114}
   _itemCountText: {fileID: 5185178290860666411}
   _itemPanel: {fileID: 1872130028362690192}
 --- !u!1 &1555696476
@@ -4778,9 +4779,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 113239447}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 21.25, y: -15}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 24, y: 24}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1555696478
@@ -6533,39 +6534,7 @@ MonoBehaviour:
   m_ItemImage: {fileID: 0}
   m_Value: 0
   m_Options:
-    m_Options:
-    - m_Text: "1\uD654"
-      m_Image: {fileID: 0}
-    - m_Text: "2\uD654"
-      m_Image: {fileID: 0}
-    - m_Text: "3\uD654"
-      m_Image: {fileID: 0}
-    - m_Text: "3\uD654"
-      m_Image: {fileID: 0}
-    - m_Text: "3\uD654"
-      m_Image: {fileID: 0}
-    - m_Text: "3\uD654"
-      m_Image: {fileID: 0}
-    - m_Text: "3\uD654"
-      m_Image: {fileID: 0}
-    - m_Text: "3\uD654"
-      m_Image: {fileID: 0}
-    - m_Text: "3\uD654"
-      m_Image: {fileID: 0}
-    - m_Text: "3\uD654"
-      m_Image: {fileID: 0}
-    - m_Text: "3\uD654"
-      m_Image: {fileID: 0}
-    - m_Text: "3\uD654"
-      m_Image: {fileID: 0}
-    - m_Text: "3\uD654"
-      m_Image: {fileID: 0}
-    - m_Text: "3\uD654"
-      m_Image: {fileID: 0}
-    - m_Text: "3\uD654"
-      m_Image: {fileID: 0}
-    - m_Text: "3\uD654"
-      m_Image: {fileID: 0}
+    m_Options: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -6609,7 +6578,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "1\uD654"
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d646751c4a419724cbd82f11313f78cc, type: 2}
   m_sharedMaterial: {fileID: 1081061963811258723, guid: d646751c4a419724cbd82f11313f78cc, type: 2}

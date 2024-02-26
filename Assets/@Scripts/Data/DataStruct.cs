@@ -6,6 +6,7 @@ public class WebtoonInfo
 {
 	public string title;
 	public string pageIndicator;
+	public List<string> navValues = new List<string>();
 }
 
 [Serializable]

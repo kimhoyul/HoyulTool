@@ -4,6 +4,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Menu;
 
 public class UI_Downloder : MonoBehaviour
 {
@@ -11,7 +12,8 @@ public class UI_Downloder : MonoBehaviour
 	[SerializeField] private TMP_InputField _searchInputField;
 	[SerializeField] private TMP_Text _titleText;
 	[SerializeField] private TMP_Text _pageIndicatorText;
-	[SerializeField] private TMP_Text _itemCountText;
+    [SerializeField] private TMP_Dropdown _dropdown;
+    [SerializeField] private TMP_Text _itemCountText;
 	[SerializeField] private Transform _itemPanel;
 
 	private SeleniumController _seleniumController;
@@ -36,7 +38,13 @@ public class UI_Downloder : MonoBehaviour
 	{
 		_titleText.text = webtoonInfo.title;
 		_pageIndicatorText.text = $"{webtoonInfo.pageIndicator}";
-	}
+        foreach (var value in webtoonInfo.navValues)
+		{
+            TMP_Dropdown.OptionData newData = new TMP_Dropdown.OptionData();
+            newData.text = value;
+            _dropdown.options.Add(newData);
+        }
+    }
 
 	private void SetItemCount(int count)
 	{

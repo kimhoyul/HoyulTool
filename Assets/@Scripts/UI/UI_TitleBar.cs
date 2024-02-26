@@ -1,4 +1,4 @@
-using System.Runtime.InteropServices;
+ï»¿using System.Runtime.InteropServices;
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,7 +8,7 @@ public class UI_TitleBar : MonoBehaviour, IPointerEnterHandler
 {
     #region Windows API Constants and Structures
 
-    // À©µµ¿ì ½ºÅ¸ÀÏ ¹× À§Ä¡ Á¶Á¤¿¡ »ç¿ëµÇ´Â »ó¼ö
+    // ìœˆë„ìš° ìŠ¤íƒ€ì¼ ë° ìœ„ì¹˜ ì¡°ì •ì— ì‚¬ìš©ë˜ëŠ” ìƒìˆ˜
     const int SWP_SHOWWINDOW = 0x40;
     const int SWP_NOMOVE = 0x0002;
     const int SWP_NOSIZE = 0x0001;
@@ -18,11 +18,11 @@ public class UI_TitleBar : MonoBehaviour, IPointerEnterHandler
     const int WS_DLGFRAME = 0x00400000;
     const int WS_CAPTION = WS_BORDER | WS_DLGFRAME;
 
-    // À©µµ¿ì ÇÚµé ¹× À§Ä¡ Á¶Á¤À» À§ÇÑ ±âº» ÇÚµé
+    // ìœˆë„ìš° í•¸ë“¤ ë° ìœ„ì¹˜ ì¡°ì •ì„ ìœ„í•œ ê¸°ë³¸ í•¸ë“¤
     static System.IntPtr hWnd;
     static System.IntPtr HWND_TOPMOST = new System.IntPtr(-1);
 
-    // À©µµ¿ì Á¤º¸ ±¸Á¶Ã¼
+    // ìœˆë„ìš° ì •ë³´ êµ¬ì¡°ì²´
     [StructLayout(LayoutKind.Sequential)]
     public struct RECT
     {
@@ -95,33 +95,33 @@ public class UI_TitleBar : MonoBehaviour, IPointerEnterHandler
 
     public static void ToggleTitleBar(bool showBorders)
     {
-        // ÇöÀç È°¼ºÈ­µÈ À©µµ¿ì ÇÚµé °¡Á®¿À±â
+        // í˜„ì¬ í™œì„±í™”ëœ ìœˆë„ìš° í•¸ë“¤ ê°€ì ¸ì˜¤ê¸°
         hWnd = GetActiveWindow();
 
-        // À¯´ÏÆ¼ ¿¡µğÅÍ¿¡¼­´Â ½ÇÇàÇÏÁö ¾ÊÀ½
+        // ìœ ë‹ˆí‹° ì—ë””í„°ì—ì„œëŠ” ì‹¤í–‰í•˜ì§€ ì•ŠìŒ
         if (Application.isEditor) return;
 
-        // ÇöÀç À©µµ¿ì ½ºÅ¸ÀÏ °¡Á®¿À±â
+        // í˜„ì¬ ìœˆë„ìš° ìŠ¤íƒ€ì¼ ê°€ì ¸ì˜¤ê¸°
         int currentStyle = GetWindowLong(hWnd, GWL_STYLE).ToInt32();
 
-        // Å¸ÀÌÆ² ¹Ù ¹× »çÀÌÁî ¹Ú½º Ç¥½Ã ¿©ºÎ¿¡ µû¶ó ½ºÅ¸ÀÏ Á¶Á¤
+        // íƒ€ì´í‹€ ë°” ë° ì‚¬ì´ì¦ˆ ë°•ìŠ¤ í‘œì‹œ ì—¬ë¶€ì— ë”°ë¼ ìŠ¤íƒ€ì¼ ì¡°ì •
         uint newStyle;
         if (showBorders)
         {
-            // Å¸ÀÌÆ² ¹Ù¿Í »çÀÌÁî ¹Ú½º¸¦ Ãß°¡
+            // íƒ€ì´í‹€ ë°”ì™€ ì‚¬ì´ì¦ˆ ë°•ìŠ¤ë¥¼ ì¶”ê°€
             newStyle = (uint)(currentStyle | WS_CAPTION | WS_SIZEBOX);
         }
         else
         {
-            // Å¸ÀÌÆ² ¹Ù¿Í »çÀÌÁî ¹Ú½º¸¦ Á¦°Å
+            // íƒ€ì´í‹€ ë°”ì™€ ì‚¬ì´ì¦ˆ ë°•ìŠ¤ë¥¼ ì œê±°
             newStyle = (uint)(currentStyle & ~(WS_CAPTION | WS_SIZEBOX));
         }
 
-        // Á¶Á¤µÈ ½ºÅ¸ÀÏ Àû¿ë
+        // ì¡°ì •ëœ ìŠ¤íƒ€ì¼ ì ìš©
         SetWindowLong(hWnd, GWL_STYLE, newStyle);
 
-        // À©µµ¿ìÀÇ ½ºÅ¸ÀÏ º¯°æÀ» Àû¿ëÇÏ±â À§ÇØ À©µµ¿ì À§Ä¡ ¹× Å©±â °»½Å
-        // À©µµ¿ì Å©±â´Â º¯°æÇÏÁö ¾Ê°í, ÃÖ»óÀ§·Î ¼³Á¤ÇÏ¿© È­¸é¿¡ Ç¥½Ã
+        // ìœˆë„ìš°ì˜ ìŠ¤íƒ€ì¼ ë³€ê²½ì„ ì ìš©í•˜ê¸° ìœ„í•´ ìœˆë„ìš° ìœ„ì¹˜ ë° í¬ê¸° ê°±ì‹ 
+        // ìœˆë„ìš° í¬ê¸°ëŠ” ë³€ê²½í•˜ì§€ ì•Šê³ , ìµœìƒìœ„ë¡œ ì„¤ì •í•˜ì—¬ í™”ë©´ì— í‘œì‹œ
         SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
     }
 }
