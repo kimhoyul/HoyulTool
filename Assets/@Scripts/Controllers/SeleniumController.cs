@@ -11,13 +11,12 @@ using System.Threading.Tasks;
 using UnityEngine.UI;
 using System;
 using OpenQA.Selenium.Interactions;
-using OpenQA.Selenium.Support.UI;
 using System.Collections.ObjectModel;
+using TMPro;
 
 public class SeleniumController : MonoBehaviour
 {
 	[SerializeField] private Transform itemPanel;
-	[SerializeField] private Transform searchedItemBG;
 
 	private ChromeOptions _options = new ChromeOptions();
 	private ChromeDriver _driver = null;
@@ -40,12 +39,7 @@ public class SeleniumController : MonoBehaviour
 
 	private bool init = false;
 
-	public void OnClickView()
-	{
-		StartCoroutine(ConvertAndDisplayImageCoroutine());
-	}
-
-	public void ConfigureDriverOptions(string url, Action<int> callback)
+	public IEnumerator StartSelenium(string url, Action<WebtoonInfo> webtoonInfoCallback, Action<int> itemCountCallback, Action<WebtoonResource> complateCallback)
 	{
 		_parseUrl = url;
 
@@ -56,7 +50,7 @@ public class SeleniumController : MonoBehaviour
 			Init();
 		}
 
-		StartCoroutine(WaitForDriverReady(callback));
+		yield return StartCoroutine(WaitForDriverReady(webtoonInfoCallback, itemCountCallback, complateCallback));
 	}
 
 	private void ClearLoadedResources()
@@ -85,26 +79,29 @@ public class SeleniumController : MonoBehaviour
 			_domains = _session.GetVersionSpecificDomains<DevToolsSessionDomains>();
 			_domains.Network.Enable(new Network.EnableCommandSettings());
 			_domains.Network.ResponseReceived += OnResponseReceived;
-			_driver.Navigate().GoToUrl(_parseUrl);
 		});
 
 		init = true;
 	}
 
-	private IEnumerator WaitForDriverReady(Action<int> callback)
+	private IEnumerator WaitForDriverReady(Action<WebtoonInfo> webtoonInfoCallback, Action<int> itemCountCallback, Action<WebtoonResource> complateCallback)
 	{
 		Managers.Loading.StartLoading(transform.parent);
 		while (_driver == null || _session == null || _domains == null)
 		{
-			yield return null;
+			yield return new WaitForSeconds(0.1f);
 		}
+
+		_driver.Navigate().GoToUrl(_parseUrl);
 
 		while (_driver.Url != _parseUrl)
 		{
 			yield return new WaitForSeconds(0.1f);
 		}
-		
-		while(true)
+
+		StartCoroutine(SetTitleTextCoroutine(webtoonInfoCallback));
+
+		while (true)
 		{
 			_imageUrls.Clear();
 			bool isPageLoadComplete = false;
@@ -133,18 +130,50 @@ public class SeleniumController : MonoBehaviour
 
 			if (_imageUrls.Count == _imageDic.Count)
 			{
+				itemCountCallback.Invoke(_imageUrls.Count);
 				Debug.Log("웹툰 파싱이 완료되었습니다.");
 				break;
 			}
 
 			_driver.Navigate().Refresh();
 		}
-		
-		StartCoroutine(ConvertAndDisplayImageCoroutine());
 
-		callback.Invoke(_imageUrls.Count);
+		((IJavaScriptExecutor)_driver).ExecuteScript("window.scrollBy(0, 0);");
+		yield return new WaitForSeconds(0.5f);
+
+		WebtoonResource webtoonResource = new WebtoonResource();
+		webtoonResource._imageUrls = _imageUrls;
+		webtoonResource._imageDic = _imageDic;
+		complateCallback.Invoke(webtoonResource);
 
 		Managers.Loading.StopLoadng();
+	}
+
+	IEnumerator SetTitleTextCoroutine(Action<WebtoonInfo> webtoonInfoCallback)
+	{
+		bool isTitleSet = false;
+		while (!isTitleSet)
+		{
+			isTitleSet = SetTitleText(webtoonInfoCallback);
+			yield return null;
+		}
+	}
+
+	private bool SetTitleText(Action<WebtoonInfo> webtoonInfoCallback)
+	{
+		var title = _driver.FindElements(By.XPath("//*[@id=\"at-main\"]/div[4]/section/article/div[1]/div/div[2]/div"));
+		var count = _driver.FindElements(By.XPath("//*[@id=\"at-main\"]/div[4]/section/article/div[1]/div/div[2]/div/span"));
+		if (title.Count != 0 && count.Count != 0)
+		{
+			var text = title[0].GetAttribute("title");
+
+			WebtoonInfo webtoonInfo = new WebtoonInfo();
+			webtoonInfo.title = text;
+			webtoonInfo.pageIndicator = count[0].Text;
+			webtoonInfoCallback.Invoke(webtoonInfo);
+			return true;
+		}
+		return false;
 	}
 
 	private IEnumerator ParseWebtoon(By findElement)
@@ -184,15 +213,6 @@ public class SeleniumController : MonoBehaviour
 				continue;
 
 			_imageUrls.Add(src);
-
-			if (searchingIndex < itemPanel.childCount)
-			{
-				itemPanel.GetChild(searchingIndex).gameObject.SetActive(true);
-			}
-			else
-			{
-				GameObject go = Managers.Resource.Instantiate("UI_LoadedImage.prefab", itemPanel);
-			}
 		}
 	}
 
@@ -209,35 +229,6 @@ public class SeleniumController : MonoBehaviour
 			{
 				_imageDic[e.Response.Url] = responseBody.Body;
 			});
-		}
-	}
-
-	private IEnumerator ConvertAndDisplayImageCoroutine()
-	{
-		_driver.Navigate().GoToUrl(_parseUrl);
-		((IJavaScriptExecutor)_driver).ExecuteScript("window.scrollBy(0, 0);");
-		yield return new WaitForSeconds(0.5f);
-		for (int i = 0; i < _imageUrls.Count; i++)
-		{
-			GameObject go = itemPanel.GetChild(i).gameObject;
-			yield return new WaitForSeconds(0.1f);
-
-			go.GetComponent<Animator>().Play("FadeIn");
-
-			RawImage raw = go.GetComponent<RawImage>();
-
-			Texture2D texture = new Texture2D(1, 1);
-			byte[] imageBytes;
-			imageBytes = Convert.FromBase64String(_imageDic[_imageUrls[i]]);
-
-			if (texture.LoadImage(imageBytes))
-			{
-				raw.texture = texture;
-			}
-			else
-			{
-				Debug.Log("Failed to load image");
-			}
 		}
 	}
 

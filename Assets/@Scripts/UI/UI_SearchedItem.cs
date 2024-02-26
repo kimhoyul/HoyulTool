@@ -7,9 +7,6 @@ using UnityEngine.UI;
 
 public class UI_SearchedItem : MonoBehaviour
 {
-	[SerializeField] private TMP_Text ItemCountText;
-	[SerializeField] private Transform ItemPanel;
-	[SerializeField] private RectTransform SearchedItemBG;
 	[SerializeField] private Button SelectAllButton;
 	[SerializeField] private Button DownloadButton;
 
@@ -19,17 +16,8 @@ public class UI_SearchedItem : MonoBehaviour
 
 	private void Start()
 	{
-		SelectAllButton.onClick.AddListener(() => ChangeSelectStateAll());
-		DownloadButton.onClick.AddListener(() => Download());
-				
-		for ( int i = 0; i < ItemPanel.childCount; i++)
-		{
-			int index = i;
-			_imageSourceUrls.Add(i, ItemPanel.GetChild(i).gameObject);
-			ItemPanel.GetChild(i).GetComponent<Button>().onClick.AddListener(() => SelectOne(index));
-		}
-
-		SetItemCountText(ItemPanel.childCount);
+		//SelectAllButton.onClick.AddListener(() => ChangeSelectStateAll());
+		//DownloadButton.onClick.AddListener(() => Download());
 	}
 
 	public void SetSourceUrls()
@@ -37,18 +25,13 @@ public class UI_SearchedItem : MonoBehaviour
 		_imageSourceUrls.Clear();
 		_selectedItem.Clear();
 
-		for (int i = 0; i < ItemPanel.childCount; i++)
+		for (int i = 0; i < transform.childCount; i++)
 		{
 			int index = i;
-			_imageSourceUrls.Add(i, ItemPanel.GetChild(i).gameObject);
-			ItemPanel.GetChild(i).GetComponent<Button>().onClick.RemoveAllListeners();
-			ItemPanel.GetChild(i).GetComponent<Button>().onClick.AddListener(() => SelectOne(index));
+			_imageSourceUrls.Add(i, transform.GetChild(i).gameObject);
+			transform.GetChild(i).GetComponent<Button>().onClick.RemoveAllListeners();
+			transform.GetChild(i).GetComponent<Button>().onClick.AddListener(() => SelectOne(index));
 		}
-	}
-
-	public void SetItemCountText(int count)
-	{
-		ItemCountText.text = $"{count} item";
 	}
 
 	private void SelectOne(int index)
@@ -70,17 +53,16 @@ public class UI_SearchedItem : MonoBehaviour
 
 		_selectedItem.Clear();
 
-		for (int i = 0; i < ItemPanel.childCount; i++)
+		for (int i = 0; i < transform.childCount; i++)
 		{
-			if (ItemPanel.GetChild(i).gameObject.activeSelf == false)
+			if (transform.GetChild(i).gameObject.activeSelf == false)
 				continue;
 
-			Utils.FindChild(ItemPanel.GetChild(i).gameObject, "Check", true).SetActive(isActive);
+			Utils.FindChild(transform.GetChild(i).gameObject, "Check", true).SetActive(isActive);
             if (isActive == true)
             {
 				_selectedItem.Add(i);
 			}
-
 		}
 	}
 
