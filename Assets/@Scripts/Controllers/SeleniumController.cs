@@ -30,7 +30,8 @@ public class SeleniumController : MonoBehaviour
     if(scrollPercentage >= 0.9) {
         window.scrollTo(0, 0);
     }";
-
+	
+	private string _baseUrl = null;
 	private string _parseUrl = null;
 	private List<string> _imageUrls = new List<string>();
 	private Dictionary<string, string> _imageDic = new Dictionary<string, string>();
@@ -39,7 +40,24 @@ public class SeleniumController : MonoBehaviour
 
 	public IEnumerator StartSelenium(string url, Action<WebtoonInfo> webtoonInfoCallback, Action<int> itemCountCallback, Action<WebtoonResource> complateCallback)
 	{
-		_parseUrl = url;
+		if (_baseUrl == null)
+		{
+			int lastIndex = url.LastIndexOf('/');
+			if (lastIndex != -1)
+			{
+				_baseUrl = url.Substring(1, lastIndex);
+				_parseUrl = url;
+			}
+			else
+			{
+				Debug.Log("URL 형식이 올바르지 않습니다.");
+				yield break;
+			}
+		}
+		else if (url.Contains(_baseUrl) == false)
+		{
+			_parseUrl = _baseUrl + url;
+		}
 
 		ClearLoadedResources();
 
@@ -163,7 +181,7 @@ public class SeleniumController : MonoBehaviour
                 var selectOptions = selectElements[0].FindElements(By.TagName("option"));
                 foreach (var option in selectOptions)
                 {
-                    webtoonInfo.navValues.Add(option.Text);
+                    webtoonInfo.navItems.Add(option.Text, option.GetAttribute("value"));
                 }
 
                 webtoonInfoCallback.Invoke(webtoonInfo);

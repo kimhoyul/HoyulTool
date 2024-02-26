@@ -6,7 +6,7 @@ public class WebtoonInfo
 {
 	public string title;
 	public string pageIndicator;
-	public List<string> navValues = new List<string>();
+	public Dictionary<string, string> navItems = new Dictionary<string, string>();
 }
 
 [Serializable]

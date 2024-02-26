@@ -1,10 +1,9 @@
-using OpenQA.Selenium;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Menu;
 
 public class UI_Downloder : MonoBehaviour
 {
@@ -17,13 +16,21 @@ public class UI_Downloder : MonoBehaviour
 	[SerializeField] private Transform _itemPanel;
 
 	private SeleniumController _seleniumController;
+	private List<string> _navValues = new List<string>();
 
 	private void Start()
 	{
 		_searchBarIcon.onClick.AddListener(() => _searchInputField.ActivateInputField());
 		_searchInputField.onSubmit.AddListener((inputValue) => HandleSearchSubmit(inputValue));
+		_dropdown.onValueChanged.AddListener((value) => HandleDropdownValueChanged(value));
 
 		_seleniumController = transform.GetComponent<SeleniumController>();
+	}
+
+	private void HandleDropdownValueChanged(int value)
+	{
+		_searchInputField.text = _navValues[value];
+		StartCoroutine(_seleniumController.StartSelenium(_navValues[value], SetWebtoonInfo, SetItemCount, SetConvertAndDisplayImage));
 	}
 
 	private void HandleSearchSubmit(string searchText)
@@ -38,11 +45,12 @@ public class UI_Downloder : MonoBehaviour
 	{
 		_titleText.text = webtoonInfo.title;
 		_pageIndicatorText.text = $"{webtoonInfo.pageIndicator}";
-        foreach (var value in webtoonInfo.navValues)
+        foreach (var navItem in webtoonInfo.navItems)
 		{
             TMP_Dropdown.OptionData newData = new TMP_Dropdown.OptionData();
-            newData.text = value;
+            newData.text = navItem.Key;
             _dropdown.options.Add(newData);
+			_navValues.Add(navItem.Value);
         }
     }
 
