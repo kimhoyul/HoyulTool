@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -45,14 +46,22 @@ public class UI_Downloder : MonoBehaviour
 	{
 		_titleText.text = webtoonInfo.title;
 		_pageIndicatorText.text = $"{webtoonInfo.pageIndicator}";
-        foreach (var navItem in webtoonInfo.navItems)
+		foreach (var navItem in webtoonInfo.navItems.Reverse())
 		{
             TMP_Dropdown.OptionData newData = new TMP_Dropdown.OptionData();
             newData.text = navItem.Key;
             _dropdown.options.Add(newData);
 			_navValues.Add(navItem.Value);
         }
-    }
+		_dropdown.value = GetCurrentPage();
+		_dropdown.RefreshShownValue();
+	}
+
+	private int GetCurrentPage()
+	{
+		string numberExtracted = _pageIndicatorText.text.Substring(1, _pageIndicatorText.text.Length - 2);
+		return int.Parse(numberExtracted.Split('/')[0]) - 1;
+	}
 
 	private void SetItemCount(int count)
 	{

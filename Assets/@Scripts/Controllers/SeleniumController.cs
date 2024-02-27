@@ -45,7 +45,7 @@ public class SeleniumController : MonoBehaviour
 			int lastIndex = url.LastIndexOf('/');
 			if (lastIndex != -1)
 			{
-				_baseUrl = url.Substring(1, lastIndex);
+				_baseUrl = url.Substring(0, lastIndex);
 				_parseUrl = url;
 			}
 			else
@@ -56,7 +56,7 @@ public class SeleniumController : MonoBehaviour
 		}
 		else if (url.Contains(_baseUrl) == false)
 		{
-			_parseUrl = _baseUrl + url;
+			_parseUrl = $"{_baseUrl}/{url}";
 		}
 
 		ClearLoadedResources();
@@ -112,6 +112,7 @@ public class SeleniumController : MonoBehaviour
 
 		while (_driver.Url != _parseUrl)
 		{
+			Debug.Log($"_driver.Url: {_driver.Url}, _parseUrl: {_parseUrl} = 웹툰 페이지 로딩중...");
 			yield return new WaitForSeconds(0.1f);
 		}
 
@@ -208,6 +209,8 @@ public class SeleniumController : MonoBehaviour
 	{
 		for (int searchingIndex = 0; searchingIndex < element.Count; searchingIndex++)
 		{
+			yield return new WaitForSeconds(0.05f);
+
 			string src = element[searchingIndex].GetAttribute("src");
 			if (src.Contains("loading"))
 			{
